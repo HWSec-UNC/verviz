@@ -15,7 +15,7 @@ This tool is aimed to integrate with **[SEIF](https://dl.acm.org/doi/10.1145/362
 - **PostgreSQL / NoSQL (TBD)** - To store execution logs and user files.
 
 ### **Visualization & Processing**
-- **D3.js / Recharts.js** - To visualize execution flow dynamically.
+- **Cytoscape.js / Recharts.js** - To visualize execution flow dynamically.
 - **WebAssembly (Future consideration)** - To run Verilog analysis efficiently in the browser.
 - **SMT Solvers (Z3, Boolector, etc.)** - To handle symbolic execution computations.
 
