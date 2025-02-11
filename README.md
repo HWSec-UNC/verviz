@@ -16,6 +16,7 @@ This tool is aimed to integrate with **[SEIF](https://dl.acm.org/doi/10.1145/362
 
 ### **Visualization & Processing**
 - **Cytoscape.js / Recharts.js** - To visualize execution flow dynamically.
+- **NetworkX, Graphviz, PyViz** - Python libraries for visualizing graphs
 - **WebAssembly (Future consideration)** - To run Verilog analysis efficiently in the browser.
 - **SMT Solvers (Z3, Boolector, etc.)** - To handle symbolic execution computations.
 
