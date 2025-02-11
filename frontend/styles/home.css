@@ -1,0 +1,21 @@
+.hero {
+    text-align: center;
+    padding: 80px 20px;
+    background: linear-gradient(135deg, #6e45e2, #88d3ce);
+    color: white;
+  }
+  .hero h1 {
+    font-size: 2.5em;
+  }
+  .cta-button {
+    background: white;
+    color: #6e45e2;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+  }
+  .features {
+    text-align: center;
+    padding: 50px;
+  }
+  

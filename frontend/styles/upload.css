@@ -1,0 +1,8 @@
+.upload-page {
+    text-align: center;
+    padding: 50px;
+  }
+  input[type="file"] {
+    margin-top: 10px;
+  }
+  
