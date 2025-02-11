@@ -1,8 +1,16 @@
 .upload-page {
-    text-align: center;
-    padding: 50px;
-  }
-  input[type="file"] {
-    margin-top: 10px;
-  }
-  
+  text-align: center;
+  padding: 50px;
+}
+
+input[type="file"] {
+  margin-top: 10px;
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  transition: border-color 0.3s ease;
+}
+
+input[type="file"]:hover {
+  border-color: #0fa3b1;
+}
