@@ -3,7 +3,7 @@
 ## Overview
 This project is part of the **Hardware Security Lab at UNC**, focused on developing a **hardware security visualization tool** to analyze **symbolic execution** and **hyperflow graphs** of Verilog RTL designs. The goal is to create an intuitive interface for visualizing execution paths and exploring security vulnerabilities in hardware systems, making complex verification tasks more accessible and efficient. This is a work in progress.
 
-This tool is aimed to integrate with **(SEIF)[https://dl.acm.org/doi/10.1145/3623652.3623666] and (SYLVIA)[https://repositum.tuwien.at/handle/20.500.12708/188806]**, two symbolic execution frameworks, to enhance hardware security analysis by mitigating path explosion problems and improving execution efficiency.
+This tool is aimed to integrate with **[SEIF](https://dl.acm.org/doi/10.1145/3623652.3623666) and [SYLVIA](https://repositum.tuwien.at/handle/20.500.12708/188806)**, two symbolic execution frameworks, to enhance hardware security analysis by mitigating path explosion problems and improving execution efficiency.
 
 ## Technologies to be Used
 ### **Frontend**
