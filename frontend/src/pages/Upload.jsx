@@ -18,18 +18,34 @@ const UploadPage = () => {
     setVisualizationType(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (!file || !name.trim()) {
       alert("Please enter a name and choose a file.");
       return;
     }
 
-    // Simulate backend storage
-    console.log("File:", file);
-    console.log("Name:", name);
-    console.log("Visualization Type:", visualizationType);
-    alert("Uploaded successfully!");
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("name", name);
+    formData.append("visualizationType", visualizationType);
+
+    try {
+      const response = await fetch("http://localhost:5000/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        alert("Uploaded successfully!");
+      } else {
+        alert(data.error);
+      }
+    } catch (error) {
+      console.error("Upload error:", error);
+      alert("Upload failed.");
+    }
   };
 
   return (

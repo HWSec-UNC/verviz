@@ -1,19 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../styles/visualizer.css";
 
-const dummyVisualizations = [
-  { id: 1, name: "Cache Analysis", date: "2024-02-10" },
-  { id: 2, name: "Pipeline Security", date: "2024-02-12" },
-  { id: 3, name: "Memory Leakage Check", date: "2024-02-14" }
-];
-
 const VisualizerPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [visualizations, setVisualizations] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  // Filter visualizations based on search input
-  const filteredVisualizations = dummyVisualizations.filter((viz) =>
+  // Fetch visualizations from the backend
+  useEffect(() => {
+    fetch("http://localhost:5000/visualizations")
+      .then((res) => res.json())
+      .then((data) => {
+        setVisualizations(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching visualizations:", err);
+        setError("Failed to load visualizations.");
+        setLoading(false);
+      });
+  }, []);
+
+  // Filter visualizations based on search query
+  const filteredVisualizations = visualizations.filter((viz) =>
     viz.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -29,6 +41,17 @@ const VisualizerPage = () => {
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
+
+      {/* Loading State */}
+      {loading && <p>Loading visualizations...</p>}
+
+      {/* Error State */}
+      {error && <p className="error">{error}</p>}
+
+      {/* No Results Found */}
+      {!loading && filteredVisualizations.length === 0 && (
+        <p>No visualizations found.</p>
+      )}
 
       {/* Visualization List */}
       <ul className="visualization-list">
