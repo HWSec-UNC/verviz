@@ -1,0 +1,52 @@
+.visualizer-container {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+    background-color: #f4f4f4;
+    min-height: 100vh;
+  }
+  .visualizer-container h1{
+    color:#EB1D00;
+  }
+  
+  .search-bar {
+    width: 60%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+  
+  .visualization-list {
+    list-style: none;
+    padding: 0;
+    max-width: 600px;
+    margin: auto;
+  }
+  
+  .visualization-item {
+    background: white;
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  
+  .visualization-item:hover {
+    transform: scale(1.03);
+  }
+  
+  .visualization-item h2 {
+    margin: 0;
+    font-size: 20px;
+    color: #ff5138;
+  }
+  
+  .visualization-item p {
+    font-size: 14px;
+    color: #555;
+  }
+  

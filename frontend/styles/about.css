@@ -1,7 +1,94 @@
-.container{
+/* Global styles */
+.about-container {
+    font-family: Arial, sans-serif;
     background-color: #FFFFFF;
-    color:#69707A;
-}
-.container :hover{
-    color:#FF5138;
-}
+    color: #69607A;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  /* Hero Section */
+  .hero-section {
+    width: 100%;
+    background: #FFFFFF;
+    color: #ff5138;
+    text-align: center;
+    padding: 50px 20px;
+  }
+  
+  .hero-section h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+  }
+  
+  .hero-section p {
+    color:#69607A;
+    font-size: 18px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  /* Content Section */
+  .content-section {
+    max-width: 800px;
+    text-align: left;
+    margin: 40px 0;
+  }
+  
+  .content-section h2 {
+    font-size: 28px;
+    margin-bottom: 10px;
+    color: #ff5138;
+  }
+  
+  .content-section p {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  
+  /* Team Section */
+  .team-section {
+    width: 100%;
+    max-width: 1000px;
+    text-align: center;
+    margin: 40px 0;
+  }
+  
+  .team-section h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #ff5138;
+  }
+  
+  /* Team Grid */
+  .team-grid {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  /* Team Card */
+  .team-card {
+    background: white;
+    padding: 20px;
+    width: 250px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .team-card h3 {
+    font-size: 20px;
+    margin-bottom: 5px;
+  }
+  
+  .team-card p {
+    font-size: 16px;
+    color: #666;
+  }
+  

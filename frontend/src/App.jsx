@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Upload from "./pages/Upload";
 import Visualizer from "./pages/Visualizer";
 import About from "./pages/About";
+import VisualizationDetails from "./pages/VisualizerDetails";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/upload" element={<Upload />} />
         <Route path="/visualizer" element={<Visualizer />} />
+        <Route path="/visualization/:visualization_id" element={<VisualizationDetails />} />
         <Route path="/about" element={<About />} />
       </Routes>
     </>

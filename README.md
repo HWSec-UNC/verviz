@@ -10,7 +10,7 @@ This tool is aimed to integrate with **[SEIF](https://dl.acm.org/doi/10.1145/362
 - **React.js and React Router**
 
 ### **Backend**
-- **Node.js + Express** - To manage API endpoints for file uploads and processing.
+- **FastAPI** - To manage API endpoints for file uploads and processing.
 - **PostgreSQL / NoSQL (TBD)** - To store execution logs and user files.
 
 ### **Visualization & Processing**
