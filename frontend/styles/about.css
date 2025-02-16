@@ -1,0 +1,7 @@
+.container{
+    background-color: #FFFFFF;
+    color:#69707A;
+}
+.container :hover{
+    color:#FF5138;
+}

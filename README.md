@@ -7,11 +7,10 @@ This tool is aimed to integrate with **(SEIF)[https://dl.acm.org/doi/10.1145/362
 
 ## Technologies to be Used
 ### **Frontend**
-- *React.js and React Router*
+- **React.js and React Router**
 
 ### **Backend**
-- **Node.js + Express** - To mageAPI endpoints for file uploads and processing. May use FastAPI instead
-- **FastAPI (optional future integration)** - For handling symbolic execution tasks.
+- **Node.js + Express** - To manage API endpoints for file uploads and processing.
 - **PostgreSQL / NoSQL (TBD)** - To store execution logs and user files.
 
 ### **Visualization & Processing**
