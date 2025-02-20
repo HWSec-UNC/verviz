@@ -9,7 +9,6 @@ const VisualizerPage = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  // Fetch visualizations from the backend
   useEffect(() => {
     fetch("http://localhost:5000/visualizations")
       .then((res) => res.json())
@@ -24,7 +23,6 @@ const VisualizerPage = () => {
       });
   }, []);
 
-  // Filter visualizations based on search query
   const filteredVisualizations = visualizations.filter((viz) =>
     viz.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -33,7 +31,6 @@ const VisualizerPage = () => {
     <div className="visualizer-container">
       <h1>Visualizations</h1>
 
-      {/* Search Bar */}
       <input
         type="text"
         className="search-bar"
@@ -42,23 +39,15 @@ const VisualizerPage = () => {
         onChange={(e) => setSearchQuery(e.target.value)}
       />
 
-      {/* Loading State */}
       {loading && <p>Loading visualizations...</p>}
-
-      {/* Error State */}
       {error && <p className="error">{error}</p>}
+      {!loading && filteredVisualizations.length === 0 && <p>No visualizations found.</p>}
 
-      {/* No Results Found */}
-      {!loading && filteredVisualizations.length === 0 && (
-        <p>No visualizations found.</p>
-      )}
-
-      {/* Visualization List */}
       <ul className="visualization-list">
         {filteredVisualizations.map((viz) => (
           <li key={viz.id} className="visualization-item" onClick={() => navigate(`/visualization/${viz.id}`)}>
             <h2>{viz.name}</h2>
-            <p>Uploaded on: {viz.date}</p>
+            <p>Uploaded on: {new Date(viz.date).toLocaleDateString()}</p>
           </li>
         ))}
       </ul>
