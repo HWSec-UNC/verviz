@@ -1,79 +1,74 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
+const BACKEND_URL = "http://localhost:5000"; // Change this when deploying
+
 const VisualizerDetails = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const [visualization, setVisualization] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const [visualization, setVisualization] = useState(null);
+    const [error, setError] = useState(null);
 
-  useEffect(() => {
-    fetch(`http://localhost:5000/visualization/${id}`)
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch visualization.");
-        return res.json();
-      })
-      .then((data) => {
-        setVisualization(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching visualization:", error);
-        setError("Visualization not found.");
-        setLoading(false);
-      });
-  }, [id]);
+    useEffect(() => {
+        console.log(`Fetching visualization with ID:`, id); // 🔥 Debugging log
+        if (!id) {
+            setError("Invalid visualization ID.");
+            return;
+        }
 
-  const handleDelete = async () => {
-    if (!window.confirm("Are you sure you want to delete this visualization?")) return;
+        fetch(`${BACKEND_URL}/visualization/${id}`)
+            .then((res) => res.json())
+            .then((data) => {
+                console.log("Received data:", data); // 🔥 Debugging log
+                if (data.error) {
+                    setError("Visualization not found.");
+                } else {
+                    setVisualization(data);
+                }
+            })
+            .catch((err) => {
+                console.error("Error fetching visualization:", err);
+                setError("Failed to load visualization.");
+            });
+    }, [id]);
 
-    try {
-      const response = await fetch(`http://localhost:5000/visualization/${id}`, {
-        method: "DELETE",
-      });
+    // 🗑️ Delete function
+    const handleDelete = async () => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this visualization?");
+        if (!confirmDelete) return;
 
-      if (response.ok) {
-        alert("Visualization deleted!");
-        navigate("/visualizations");
-      } else {
-        alert("Failed to delete.");
-      }
-    } catch (error) {
-      console.error("Delete error:", error);
-    }
-  };
+        try {
+            const response = await fetch(`${BACKEND_URL}/visualization/${id}`, {
+                method: "DELETE",
+            });
 
-  return (
-    <div>
-      <h1>Visualization Details (ID: {id})</h1>
+            const result = await response.json();
+            if (response.ok) {
+                alert("Visualization deleted successfully!");
+                navigate("/visualizations"); // Redirect to the list after deletion
+            } else {
+                alert(`Failed to delete visualization: ${result.error}`);
+            }
+        } catch (error) {
+            console.error("Error deleting visualization:", error);
+            alert("Error deleting visualization.");
+        }
+    };
 
-      {loading && <p>Loading visualization...</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
+    if (error) return <p className="error">{error}</p>;
+    if (!visualization) return <p>Loading visualization...</p>;
 
-      {visualization ? (
-        <>
-          <h2>Name: {visualization.name}</h2>
-          <h3>Type: {visualization.type}</h3>
-          <h3>Clock Cycles: {visualization.json_data?.clockCycles || "N/A"}</h3>
-          <pre>{JSON.stringify(visualization.json_data, null, 2)}</pre>
-          <h3>Output File (out.txt):</h3>
-          <pre>{visualization.output_text || "No output file available."}</pre>
+    return (
+        <div>
+            <h1>Visualization Details (ID: {visualization.id})</h1>
+            <pre>{JSON.stringify(visualization, null, 2)}</pre>
 
-          {/* ✅ Delete button should only show if visualization exists */}
-          <button 
-            onClick={handleDelete} 
-            style={{ backgroundColor: "red", color: "white", marginTop: "10px" }}
-          >
-            Delete Visualization
-          </button>
-        </>
-      ) : (
-        <p>Visualization not found.</p>
-      )}
-    </div>
-  );
+            {/* 🗑️ Delete Button */}
+            <button onClick={handleDelete} style={{ background: "red", color: "white", padding: "10px", border: "none", cursor: "pointer", marginTop: "10px" }}>
+                Delete Visualization
+            </button>
+        </div>
+    );
 };
 
 export default VisualizerDetails;
-
