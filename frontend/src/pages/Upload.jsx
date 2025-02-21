@@ -1,19 +1,26 @@
 import { useState } from "react";
 import "../../styles/upload.css";
 
+const BACKEND_URL = "http://localhost:5000"; // Change this when deploying
+
+
 const UploadPage = () => {
   const [file, setFile] = useState(null);
   const [name, setName] = useState("");
   const [visualizationType, setVisualizationType] = useState("sylvia");
   const [clockCycles, setClockCycles] = useState(1); // Default to 1
   const [jsonResponse, setJsonResponse] = useState(null);
-  const [downloadLink, setDownloadLink] = useState("");
+  const [outputText, setOutputText] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
+  // Handle Input Changes
   const handleFileChange = (event) => setFile(event.target.files[0]);
   const handleNameChange = (event) => setName(event.target.value);
   const handleOptionChange = (event) => setVisualizationType(event.target.value);
   const handleClockCyclesChange = (event) => setClockCycles(event.target.value);
 
+  // Handle Form Submission
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!file || !name.trim()) {
@@ -21,31 +28,36 @@ const UploadPage = () => {
       return;
     }
 
+    setLoading(true);
+    setError(null);
+    setJsonResponse(null);
+    setOutputText("");
+
     const formData = new FormData();
     formData.append("file", file);
     formData.append("name", name);
     formData.append("visualizationType", visualizationType);
-    if (visualizationType === "sylvia") {
-      formData.append("clockCycles", clockCycles);
-    }
+    formData.append("clockCycles", Number(clockCycles)); // Ensure it's an integer
 
     try {
-      const response = await fetch("http://localhost:5000/upload", {
+      const response = await fetch(`${BACKEND_URL}/upload`, {
         method: "POST",
         body: formData,
       });
 
       const data = await response.json();
       if (response.ok) {
-        setJsonResponse(data.analysis);
-        setDownloadLink(data.outputFile);
-        alert("Uploaded successfully!");
+        setJsonResponse(data.json_data);
+        setOutputText(data.output_text);
+        alert("File uploaded and processed successfully!");
       } else {
-        alert(data.error);
+        throw new Error(data.error || "Upload failed.");
       }
     } catch (error) {
       console.error("Upload error:", error);
-      alert("Upload failed.");
+      setError("Upload failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -53,19 +65,16 @@ const UploadPage = () => {
     <div className="upload-container">
       <h1>Upload Your Verilog File</h1>
       <form onSubmit={handleSubmit} className="upload-form">
-        {/* Name Input */}
         <label className="file-label">
           Enter a name:
           <input type="text" value={name} onChange={handleNameChange} className="text-input" required />
         </label>
 
-        {/* File Upload */}
         <label className="file-label">
           Choose a file:
           <input type="file" onChange={handleFileChange} className="file-input" required />
         </label>
 
-        {/* Select Visualization Type */}
         <div className="options">
           <label className="radio-label">
             <input type="radio" name="visualizationType" value="seif" checked={visualizationType === "seif"} onChange={handleOptionChange} />
@@ -78,7 +87,6 @@ const UploadPage = () => {
           </label>
         </div>
 
-        {/* Clock Cycle Input (Only for Sylvia) */}
         {visualizationType === "sylvia" && (
           <label className="file-label">
             Enter number of clock cycles:
@@ -86,11 +94,13 @@ const UploadPage = () => {
           </label>
         )}
 
-        {/* Submit Button */}
-        <button type="submit" className="submit-btn">Upload & Analyze</button>
+        <button type="submit" className="submit-btn" disabled={loading}>
+          {loading ? "Processing..." : "Upload & Analyze"}
+        </button>
       </form>
 
-      {/* Display JSON Output */}
+      {error && <p className="error-message">{error}</p>}
+
       {jsonResponse && (
         <div className="json-output">
           <h3>JSON Response:</h3>
@@ -98,12 +108,10 @@ const UploadPage = () => {
         </div>
       )}
 
-      {/* Download Button */}
-      {downloadLink && (
-        <div className="download-section">
-          <a href={downloadLink} download>
-            <button>Download Output File</button>
-          </a>
+      {outputText && (
+        <div className="output-text">
+          <h3>Output File (out.txt):</h3>
+          <pre>{outputText}</pre>
         </div>
       )}
     </div>
@@ -111,4 +119,3 @@ const UploadPage = () => {
 };
 
 export default UploadPage;
-

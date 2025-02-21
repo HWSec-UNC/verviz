@@ -32,7 +32,6 @@ const VisualizerDetails = () => {
             });
     }, [id]);
 
-    // 🗑️ Delete function
     const handleDelete = async () => {
         const confirmDelete = window.confirm("Are you sure you want to delete this visualization?");
         if (!confirmDelete) return;

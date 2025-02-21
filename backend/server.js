@@ -3,63 +3,102 @@ const express = require("express");
 const multer = require("multer");
 const cors = require("cors");
 const { Pool } = require("pg");
+const axios = require("axios");
+const fs = require("fs");
+const path = require("path");
+const FormData = require("form-data");
 
 const app = express();
 const PORT = 5000;
+
 app.use(cors());
 app.use(express.json());
 
+const SYLVIA_API_URL = "http://127.0.0.1:8000/analyze"; // Ensure IPv4 compatibility
+
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false } // Required for Neon, Render, etc.
+    ssl: { rejectUnauthorized: false }
 });
 
-// Create table if it doesn’t exist
-pool.query(`
-    CREATE TABLE IF NOT EXISTS visualizations (
-        id SERIAL PRIMARY KEY,
-        name TEXT NOT NULL,
-        date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        type TEXT NOT NULL,
-        json_data JSONB NOT NULL,
-        output_text TEXT NOT NULL
-    );
-`, (err) => {
-    if (err) console.error("Error creating table:", err);
-    else console.log("✅ Database connected & table ready.");
-});
+// Ensure "uploads" folder exists
+const UPLOADS_DIR = path.join(__dirname, "uploads");
+if (!fs.existsSync(UPLOADS_DIR)) {
+    fs.mkdirSync(UPLOADS_DIR);
+}
 
-// Configure Multer
-const storage = multer.memoryStorage();
+// Configure Multer for File Uploads
+const storage = multer.diskStorage({
+    destination: UPLOADS_DIR,
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + "-" + file.originalname);
+    }
+});
 const upload = multer({ storage });
 
-// Upload Route (Stores Visualization in DB)
+// 🚀 **Upload Route (Processes File with Sylvia & Stores in DB)**
 app.post("/upload", upload.single("file"), async (req, res) => {
-    const { name, visualizationType, clockCycles } = req.body;
-    if (!name || !visualizationType || !req.file) {
-        return res.status(400).json({ error: "Name, file, and type are required." });
+    const { name, clockCycles } = req.body;
+
+    console.log("🔹 Received Upload Request:");
+    console.log("📁 File:", req.file ? req.file.filename : "No file received");
+    console.log("📌 Name:", name);
+    console.log("🔢 Clock Cycles:", clockCycles);
+
+    if (!req.file || !name || !clockCycles) {
+        console.error("🚨 Missing required fields.");
+        return res.status(400).json({ error: "Missing file, name, or clock cycles." });
     }
 
+    const filePath = req.file.path;
+
     try {
-        const fakeJson = { tree: "Sample JSON Tree for D3.js", clockCycles };
-        const fakeOutputText = "Sample Output Text from out.txt";
+        // Create FormData for Sylvia API request
+        const formData = new FormData();
+        formData.append("file", fs.createReadStream(filePath));
+        formData.append("clock_cycles", clockCycles.toString()); // Ensure string format
 
-        const result = await pool.query(
-            `INSERT INTO visualizations (name, type, json_data, output_text)
-             VALUES ($1, $2, $3, $4) RETURNING id`,
-            [name, visualizationType, fakeJson, fakeOutputText]
-        );
+        console.log("📡 Sending request to Sylvia API...");
+        console.log("🔗 Sylvia API URL:", SYLVIA_API_URL);
 
-        const visualizationId = result.rows[0].id;
-        res.json({ visualizationId, message: "File uploaded successfully" });
+        try {
+            const response = await axios.post(SYLVIA_API_URL, formData, {
+                headers: formData.getHeaders(),
+            });
+
+            console.log("✅ Sylvia API Response:", response.data);
+
+            if (!response.data.json_data || !response.data.output_text) {
+                console.error("🚨 Invalid response from Sylvia API.");
+                return res.status(500).json({ error: "Sylvia API did not return valid data." });
+            }
+
+            // Store response in PostgreSQL
+            const result = await pool.query(
+                `INSERT INTO visualizations (name, type, json_data, output_text)
+                 VALUES ($1, $2, $3, $4) RETURNING id`,
+                [name, "sylvia", response.data.json_data, response.data.output_text]
+            );
+
+            const visualizationId = result.rows[0].id;
+            console.log("🗄️ Stored in database. ID:", visualizationId);
+            res.json({ visualizationId, message: "File processed successfully!" });
+
+        } catch (error) {
+            console.error("🔥 Sylvia API Request Failed:", error.message);
+            if (error.response) {
+                console.error("🔥 Sylvia API Response Data:", error.response.data);
+            }
+            return res.status(500).json({ error: "Failed to process file with Sylvia API" });
+        }
 
     } catch (error) {
-        console.error("Database error:", error);
-        res.status(500).json({ error: "Failed to store visualization." });
+        console.error("🚨 Error processing file:", error);
+        res.status(500).json({ error: "Failed to process file in node backend for Sylvia" });
     }
 });
 
-// Fetch all visualizations
+// 📌 **Fetch All Visualizations**
 app.get("/visualizations", async (req, res) => {
     try {
         const result = await pool.query(`SELECT id, name, date, type FROM visualizations`);
@@ -70,7 +109,7 @@ app.get("/visualizations", async (req, res) => {
     }
 });
 
-// Fetch visualization by ID
+// 📌 **Fetch Visualization by ID**
 app.get("/visualization/:id", async (req, res) => {
     try {
         const result = await pool.query(`SELECT * FROM visualizations WHERE id = $1`, [req.params.id]);
@@ -84,24 +123,26 @@ app.get("/visualization/:id", async (req, res) => {
     }
 });
 
+// 📌 **Delete Visualization by ID**
 app.delete("/visualization/:id", async (req, res) => {
-  try {
-      const result = await pool.query("DELETE FROM visualizations WHERE id = $1 RETURNING *", [req.params.id]);
+    try {
+        const result = await pool.query("DELETE FROM visualizations WHERE id = $1 RETURNING *", [req.params.id]);
 
-      if (result.rowCount === 0) {
-          return res.status(404).json({ error: "Visualization not found." });
-      }
+        if (result.rowCount === 0) {
+            return res.status(404).json({ error: "Visualization not found." });
+        }
 
-      res.json({ message: "Visualization deleted successfully." });
-  } catch (error) {
-      console.error("Database error:", error);
-      res.status(500).json({ error: "Failed to delete visualization." });
-  }
+        res.json({ message: "Visualization deleted successfully." });
+    } catch (error) {
+        console.error("Database error:", error);
+        res.status(500).json({ error: "Failed to delete visualization." });
+    }
 });
+
+// 📌 **Root Route**
 app.get("/", (req, res) => {
-  res.send("Server is running! Available routes: /visualizations, /visualization/:id");
+    res.send("Server is running! Available routes: /visualizations, /visualization/:id");
 });
 
-
-// Start Server
+// 📌 **Start Server**
 app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
