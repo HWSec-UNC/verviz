@@ -2,11 +2,9 @@ require("dotenv").config();
 const express = require("express");
 const multer = require("multer");
 const cors = require("cors");
-const { Pool } = require("pg");
-const axios = require("axios");
-const fs = require("fs");
-const path = require("path");
-const FormData = require("form-data");
+const { analyzeFileWithSylvia } = require("./services/sylviaService");
+const { saveVisualization } = require("./services/databaseService");
+const { fetchAllVisualizations, fetchVisualizationById, deleteVisualization } = require("./services/databaseService");
 
 const app = express();
 const PORT = 5000;
@@ -14,15 +12,10 @@ const PORT = 5000;
 app.use(cors());
 app.use(express.json());
 
-const SYLVIA_API_URL = "http://127.0.0.1:8000/analyze"; // Ensure IPv4 compatibility
-
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false }
-});
-
 // Ensure "uploads" folder exists
-const UPLOADS_DIR = path.join(__dirname, "uploads");
+const UPLOADS_DIR = "uploads";
+const fs = require("fs");
+const path = require("path");
 if (!fs.existsSync(UPLOADS_DIR)) {
     fs.mkdirSync(UPLOADS_DIR);
 }
@@ -38,71 +31,38 @@ const upload = multer({ storage });
 
 // 🚀 **Upload Route (Processes File with Sylvia & Stores in DB)**
 app.post("/upload", upload.single("file"), async (req, res) => {
-    const { name, clockCycles } = req.body;
-
-    console.log("🔹 Received Upload Request:");
-    console.log("📁 File:", req.file ? req.file.filename : "No file received");
-    console.log("📌 Name:", name);
-    console.log("🔢 Clock Cycles:", clockCycles);
-
-    if (!req.file || !name || !clockCycles) {
-        console.error("🚨 Missing required fields.");
-        return res.status(400).json({ error: "Missing file, name, or clock cycles." });
-    }
-
-    const filePath = req.file.path;
-
     try {
-        // Create FormData for Sylvia API request
-        const formData = new FormData();
-        formData.append("file", fs.createReadStream(filePath));
-        formData.append("clock_cycles", clockCycles.toString()); // Ensure string format
-
-        console.log("📡 Sending request to Sylvia API...");
-        console.log("🔗 Sylvia API URL:", SYLVIA_API_URL);
-
-        try {
-            const response = await axios.post(SYLVIA_API_URL, formData, {
-                headers: formData.getHeaders(),
-            });
-
-            console.log("✅ Sylvia API Response:", response.data);
-
-            if (!response.data.json_data || !response.data.output_text) {
-                console.error("🚨 Invalid response from Sylvia API.");
-                return res.status(500).json({ error: "Sylvia API did not return valid data." });
-            }
-
-            // Store response in PostgreSQL
-            const result = await pool.query(
-                `INSERT INTO visualizations (name, type, json_data, output_text)
-                 VALUES ($1, $2, $3, $4) RETURNING id`,
-                [name, "sylvia", response.data.json_data, response.data.output_text]
-            );
-
-            const visualizationId = result.rows[0].id;
-            console.log("🗄️ Stored in database. ID:", visualizationId);
-            res.json({ visualizationId, message: "File processed successfully!" });
-
-        } catch (error) {
-            console.error("🔥 Sylvia API Request Failed:", error.message);
-            if (error.response) {
-                console.error("🔥 Sylvia API Response Data:", error.response.data);
-            }
-            return res.status(500).json({ error: "Failed to process file with Sylvia API" });
+        const { name, clockCycles } = req.body;
+        if (!req.file || !name || !clockCycles) {
+            return res.status(400).json({ error: "Missing file, name, or clock cycles." });
         }
 
+        console.log("🔹 Upload Request:", { name, file: req.file.filename, clockCycles });
+
+        const filePath = req.file.path;
+
+        // Call Sylvia API
+        const sylviaResponse = await analyzeFileWithSylvia(filePath, clockCycles);
+
+        // Save to database
+        const visualizationId = await saveVisualization(
+            name,
+            sylviaResponse.json_data,
+            sylviaResponse.output_text
+        );
+
+        res.json({ visualizationId, message: "File processed successfully!" });
     } catch (error) {
-        console.error("🚨 Error processing file:", error);
-        res.status(500).json({ error: "Failed to process file in node backend for Sylvia" });
+        console.error("🔥 Error in /upload route:", error.message);
+        res.status(500).json({ error: "Internal Server Error" });
     }
 });
 
 // 📌 **Fetch All Visualizations**
 app.get("/visualizations", async (req, res) => {
     try {
-        const result = await pool.query(`SELECT id, name, date, type FROM visualizations`);
-        res.json(result.rows);
+        const visualizations = await fetchAllVisualizations();
+        res.json(visualizations);
     } catch (error) {
         console.error("Database error:", error);
         res.status(500).json({ error: "Failed to fetch visualizations." });
@@ -112,11 +72,11 @@ app.get("/visualizations", async (req, res) => {
 // 📌 **Fetch Visualization by ID**
 app.get("/visualization/:id", async (req, res) => {
     try {
-        const result = await pool.query(`SELECT * FROM visualizations WHERE id = $1`, [req.params.id]);
-        if (result.rows.length === 0) {
+        const visualization = await fetchVisualizationById(req.params.id);
+        if (!visualization) {
             return res.status(404).json({ error: "Visualization not found." });
         }
-        res.json(result.rows[0]);
+        res.json(visualization);
     } catch (error) {
         console.error("Database error:", error);
         res.status(500).json({ error: "Failed to fetch visualization." });
@@ -126,12 +86,10 @@ app.get("/visualization/:id", async (req, res) => {
 // 📌 **Delete Visualization by ID**
 app.delete("/visualization/:id", async (req, res) => {
     try {
-        const result = await pool.query("DELETE FROM visualizations WHERE id = $1 RETURNING *", [req.params.id]);
-
-        if (result.rowCount === 0) {
+        const deleted = await deleteVisualization(req.params.id);
+        if (!deleted) {
             return res.status(404).json({ error: "Visualization not found." });
         }
-
         res.json({ message: "Visualization deleted successfully." });
     } catch (error) {
         console.error("Database error:", error);
@@ -141,7 +99,7 @@ app.delete("/visualization/:id", async (req, res) => {
 
 // 📌 **Root Route**
 app.get("/", (req, res) => {
-    res.send("Server is running! Available routes: /visualizations, /visualization/:id");
+    res.send("Server is running! Available routes: /upload, /visualizations, /visualization/:id");
 });
 
 // 📌 **Start Server**

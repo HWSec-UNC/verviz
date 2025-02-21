@@ -46,7 +46,7 @@ const VisualizerPage = () => {
       <ul className="visualization-list">
         {filteredVisualizations.map((viz) => (
           <li key={viz.id} className="visualization-item" onClick={() => navigate(`/visualization/${viz.id}`)}>
-            <h2>{viz.name}</h2>
+            <h2>{viz.name} - {viz.type}</h2>
             <p>Uploaded on: {new Date(viz.date).toLocaleDateString()}</p>
           </li>
         ))}
