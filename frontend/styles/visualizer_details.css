@@ -1,0 +1,14 @@
+:root {
+    --main-color: #ff5138;
+    --secondary-color: #EB1D00
+}
+.delete-button{
+    display: flex;
+    margin-left: auto;
+    background: var(--main-color); 
+    color: white; 
+    padding: 10px; 
+    border: none; 
+    cursor: pointer; 
+    marginTop: 10px
+}

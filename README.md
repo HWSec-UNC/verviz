@@ -37,13 +37,22 @@ This tool is aimed to integrate with **[SEIF](https://dl.acm.org/doi/10.1145/362
    ```
 2. Install dependencies:
    ```bash
-   npm install
    cd frontend
+   npm install
+   cd ../backend
+   npm install
    ```
-3. Run the application:
+3. Run the application's frontend and backend:
    ```bash
+   cd ../frontend
    npm run dev
     ```
+    in a new terminal
+    ```bash
+    cd backend
+    node server.js
+    ```
+**Note:** The sylvia and seif API is not avalible to use right now but will be deployed soon. Also, accesing the database is not possible for extenernal users. This will all be avalible once deployed on OKD.
 
 ## Contribution
 This project is actively evolving, and feedback on UI improvements, backend optimizations, and new visualization techniques is encouraged.
