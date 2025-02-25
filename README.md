@@ -10,7 +10,8 @@ This tool is aimed to integrate with **[SEIF](https://dl.acm.org/doi/10.1145/362
 - **React.js and React Router**
 
 ### **Backend**
-- **FastAPI** - To manage API endpoints for file uploads and processing.
+- **Express.js** - To manage API endpoints for file uploads and processing.
+- **FastAPI** - Built on top of Seif and Sylvia to process incoming files
 - **PostgreSQL with neon.tech** - To store execution logs and user files.
 
 ### **Visualization & Processing**
