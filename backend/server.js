@@ -29,7 +29,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// 🚀 **Upload Route (Processes File with Sylvia & Stores in DB)**
+// *Upload Route (Processes File with Sylvia and Stores in DB)
 app.post("/upload", upload.single("file"), async (req, res) => {
     try {
         const { name, clockCycles } = req.body;
@@ -37,7 +37,7 @@ app.post("/upload", upload.single("file"), async (req, res) => {
             return res.status(400).json({ error: "Missing file, name, or clock cycles." });
         }
 
-        console.log("🔹 Upload Request:", { name, file: req.file.filename, clockCycles });
+        console.log("Upload Request:", { name, file: req.file.filename, clockCycles });
 
         const filePath = req.file.path;
 
@@ -53,12 +53,12 @@ app.post("/upload", upload.single("file"), async (req, res) => {
 
         res.json({ visualizationId, message: "File processed successfully!" });
     } catch (error) {
-        console.error("🔥 Error in /upload route:", error.message);
+        console.error("Error in /upload route:", error.message);
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
 
-// 📌 **Fetch All Visualizations**
+// Fetch All Visualizations
 app.get("/visualizations", async (req, res) => {
     try {
         const visualizations = await fetchAllVisualizations();
@@ -69,7 +69,7 @@ app.get("/visualizations", async (req, res) => {
     }
 });
 
-// 📌 **Fetch Visualization by ID**
+// Fetch Visualization by ID
 app.get("/visualization/:id", async (req, res) => {
     try {
         const visualization = await fetchVisualizationById(req.params.id);
@@ -83,7 +83,7 @@ app.get("/visualization/:id", async (req, res) => {
     }
 });
 
-// 📌 **Delete Visualization by ID**
+// Delete Visualization by ID
 app.delete("/visualization/:id", async (req, res) => {
     try {
         const deleted = await deleteVisualization(req.params.id);
@@ -97,10 +97,10 @@ app.delete("/visualization/:id", async (req, res) => {
     }
 });
 
-// 📌 **Root Route**
+// Root Route
 app.get("/", (req, res) => {
     res.send("Server is running! Available routes: /upload, /visualizations, /visualization/:id");
 });
 
-// 📌 **Start Server**
-app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
+// tart Server
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

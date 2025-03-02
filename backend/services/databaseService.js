@@ -20,10 +20,10 @@ async function saveVisualization(name, jsonData, outputText) {
             [name, "sylvia", jsonData, outputText]
         );
 
-        console.log("🗄️ Stored in database. ID:", result.rows[0].id);
+        console.log("Stored in database. ID:", result.rows[0].id);
         return result.rows[0].id;
     } catch (error) {
-        console.error("🔥 Database error:", error);
+        console.error("Database error:", error);
         throw new Error("Failed to save visualization data");
     }
 }
@@ -37,7 +37,7 @@ async function fetchAllVisualizations() {
         const result = await pool.query("SELECT id, name, date, type FROM visualizations");
         return result.rows;
     } catch (error) {
-        console.error("🔥 Database error:", error);
+        console.error("Database error:", error);
         throw new Error("Failed to fetch visualizations.");
     }
 }
@@ -52,7 +52,7 @@ async function fetchVisualizationById(id) {
         const result = await pool.query("SELECT * FROM visualizations WHERE id = $1", [id]);
         return result.rows.length > 0 ? result.rows[0] : null;
     } catch (error) {
-        console.error("🔥 Database error:", error);
+        console.error("Database error:", error);
         throw new Error("Failed to fetch visualization.");
     }
 }
@@ -67,7 +67,7 @@ async function deleteVisualization(id) {
         const result = await pool.query("DELETE FROM visualizations WHERE id = $1 RETURNING *", [id]);
         return result.rowCount > 0;
     } catch (error) {
-        console.error("🔥 Database error:", error);
+        console.error("Database error:", error);
         throw new Error("Failed to delete visualization.");
     }
 }

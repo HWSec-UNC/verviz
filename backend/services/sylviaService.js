@@ -2,7 +2,7 @@ const axios = require("axios");
 const fs = require("fs");
 const FormData = require("form-data");
 
-const SYLVIA_API_URL = "http://127.0.0.1:8000/analyze"; // Ensuring IPv4
+const SYLVIA_API_URL = "http://127.0.0.1:8000/analyze"; // Change when fully deployed
 
 /**
  * Sends a file to Sylvia API for processing
@@ -24,12 +24,12 @@ async function analyzeFileWithSylvia(filePath, clockCycles) {
             headers: formData.getHeaders(),
         });
 
-        console.log("✅ Sylvia API Response:", response.data);
+        console.log("Sylvia API Response:", response.data);
         return response.data;
     } catch (error) {
-        console.error("🔥 Sylvia API Request Failed:", error.message);
+        console.error("Sylvia API Request Failed:", error.message);
         if (error.response) {
-            console.error("🔥 Sylvia API Response Data:", error.response.data);
+            console.error("Sylvia API Response Data:", error.response.data);
         }
         throw new Error("Failed to process file with Sylvia API");
     }
