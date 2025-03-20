@@ -15,16 +15,14 @@ This tool is aimed to integrate with **[SEIF](https://dl.acm.org/doi/10.1145/362
 - **PostgreSQL with neon.tech** - To store execution logs and user files.
 
 ### **Visualization & Processing**
-- **Cytoscape.js / Recharts.js** - To visualize execution flow dynamically.
+- **D3.js/ graph.js / GraphCytoscape.js / Recharts.js** - To visualize execution flow dynamically.
 - **NetworkX, Graphviz, PyViz** - Python libraries for visualizing graphs
 - **WebAssembly (Future consideration)** - To run Verilog analysis efficiently in the browser.
-- **SMT Solvers (Z3, Boolector, etc.)** - To handle symbolic execution computations.
 
 ## Features
 - **Upload Verilog Files** - Users can upload Verilog RTL files for processing.
 - **Symbolic Execution Visualization** - Displays execution paths in a clear, structured format.
 - **Security Flow Analysis** - Helps identify vulnerabilities in hardware designs.
-- **Modern UI Design** - Clean, professional layout inspired by industry standards.
 
 ## Direction & Future Enhancements
 - **Integration with SEIF and SYLVIA** - Enhancing symbolic execution capabilities for improved security analysis.
@@ -53,7 +51,7 @@ This tool is aimed to integrate with **[SEIF](https://dl.acm.org/doi/10.1145/362
     cd backend
     node server.js
     ```
-**Note:** The sylvia and seif API is not avalible to use right now but will be deployed soon. Also, accesing the database is not possible for extenernal users. This will all be avalible once deployed on OKD.
+**Note:** The Sylvia and Seif APIs are not available to use right now but will be deployed soon. External users cannot access the database. This will all be available once deployed on OKD.
 
 ## Contribution
 This project is actively evolving, and feedback on UI improvements, backend optimizations, and new visualization techniques is encouraged.
