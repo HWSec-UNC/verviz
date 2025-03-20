@@ -36,6 +36,10 @@ This tool is aimed to integrate with **[SEIF](https://dl.acm.org/doi/10.1145/362
    git clone https://github.com/your-repo/hardware-visualization.git
    cd hardware-visualization
    ```
+2. Open the Dev Container:
+   1. Open VScode and Install Dev Containers extension
+   2. Reopening the project in a dev container can be done with Ctrl+Shift+P(or Cmd+Shift+P on Mac) and typing "Dev Containers: Reopen in Container" and selecting that option.
+   **_NOTE:_** You also may see a pop up in VSCode on the bottom right hand side of your screen roughly stating "Would you like to reopen this project in a dev container?" which you can click yes to to          achieve the same result.
 2. Install dependencies:
    ```bash
    cd frontend
@@ -43,6 +47,7 @@ This tool is aimed to integrate with **[SEIF](https://dl.acm.org/doi/10.1145/362
    cd ../backend
    npm install
    ```
+   **_NOTE:_** If you have any security vulnerabilities when running `npm install`, run `npm audit fix` to resolve these
 3. Run the application's frontend and backend:
    ```bash
    cd ../frontend
