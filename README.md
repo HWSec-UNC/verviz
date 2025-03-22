@@ -15,16 +15,14 @@ This tool is aimed to integrate with **[SEIF](https://dl.acm.org/doi/10.1145/362
 - **PostgreSQL with neon.tech** - To store execution logs and user files.
 
 ### **Visualization & Processing**
-- **Cytoscape.js / Recharts.js** - To visualize execution flow dynamically.
+- **D3.js/ graph.js / GraphCytoscape.js / Recharts.js** - To visualize execution flow dynamically.
 - **NetworkX, Graphviz, PyViz** - Python libraries for visualizing graphs
 - **WebAssembly (Future consideration)** - To run Verilog analysis efficiently in the browser.
-- **SMT Solvers (Z3, Boolector, etc.)** - To handle symbolic execution computations.
 
 ## Features
 - **Upload Verilog Files** - Users can upload Verilog RTL files for processing.
 - **Symbolic Execution Visualization** - Displays execution paths in a clear, structured format.
 - **Security Flow Analysis** - Helps identify vulnerabilities in hardware designs.
-- **Modern UI Design** - Clean, professional layout inspired by industry standards.
 
 ## Direction & Future Enhancements
 - **Integration with SEIF and SYLVIA** - Enhancing symbolic execution capabilities for improved security analysis.
@@ -36,6 +34,10 @@ This tool is aimed to integrate with **[SEIF](https://dl.acm.org/doi/10.1145/362
    git clone https://github.com/your-repo/hardware-visualization.git
    cd hardware-visualization
    ```
+2. Open the Dev Container:
+   1. Open VScode and Install Dev Containers extension
+   2. Reopening the project in a dev container can be done with Ctrl+Shift+P(or Cmd+Shift+P on Mac) and typing "Dev Containers: Reopen in Container" and selecting that option.
+   **_NOTE:_** You also may see a pop up in VSCode on the bottom right hand side of your screen roughly stating "Would you like to reopen this project in a dev container?" which you can click yes to to          achieve the same result.
 2. Install dependencies:
    ```bash
    cd frontend
@@ -43,6 +45,7 @@ This tool is aimed to integrate with **[SEIF](https://dl.acm.org/doi/10.1145/362
    cd ../backend
    npm install
    ```
+   **_NOTE:_** If you have any security vulnerabilities when running `npm install`, run `npm audit fix` to resolve these
 3. Run the application's frontend and backend:
    ```bash
    cd ../frontend
@@ -53,7 +56,7 @@ This tool is aimed to integrate with **[SEIF](https://dl.acm.org/doi/10.1145/362
     cd backend
     node server.js
     ```
-**Note:** The sylvia and seif API is not avalible to use right now but will be deployed soon. Also, accesing the database is not possible for extenernal users. This will all be avalible once deployed on OKD.
+**Note:** The Sylvia and Seif APIs are not available to use right now but will be deployed soon. External users cannot access the database. This will all be available once deployed on OKD.
 
 ## Contribution
 This project is actively evolving, and feedback on UI improvements, backend optimizations, and new visualization techniques is encouraged.
