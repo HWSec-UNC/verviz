@@ -1,0 +1,17 @@
+{
+    "name": "Hardware Visualization Dev Container",
+    "dockerFile": "Dockerfile",
+    "settings": {
+      "terminal.integrated.shell.linux": "/bin/bash"
+    },
+    "extensions": [
+      "ms-azuretools.vscode-docker",
+      "ms-vscode-remote.remote-containers"
+    ],
+    "postCreateCommand": "bash .devcontainer/post-create.sh",
+    "remoteUser": "root",
+    "features": {
+      "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+    }
+  }
+  

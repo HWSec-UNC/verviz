@@ -1,18 +1,18 @@
-# Use official Python image
-FROM python:3.10
+# Use Node.js as base image
+FROM node:18-alpine
 
-# Set the working directory
+# Set working directory
 WORKDIR /app
 
-# Copy backend files
-COPY . /app
+# Copy package.json and install dependencies
+COPY package.json package-lock.json ./
+RUN npm install
 
-# Install dependencies
-RUN pip install --no-cache-dir -r Sylvia/requirements.txt
-RUN pip install fastapi uvicorn pymongo
+# Copy all source code
+COPY . .
 
-# Expose API port
-EXPOSE 8000
+# Expose port 8080
+EXPOSE 8080
 
-# Start FastAPI
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Start the backend server
+CMD ["node", "server.js"]
