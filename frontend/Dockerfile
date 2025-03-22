@@ -1,27 +1,16 @@
-# Build stage
-FROM node:18-alpine AS build
-
-# Set the working directory
+# Stage 1: Build the frontend with Vite
+FROM node:22 as build
 WORKDIR /app
-
-# Copy package.json and install dependencies
-COPY package.json package-lock.json ./
-RUN npm install
-
-# Copy the rest of the application files
 COPY . .
+RUN npm install && npm run build
 
-# Build the application
-RUN npm run build
-
-# Production stage
-FROM nginx:stable-alpine
-
-# Copy built frontend files to Nginx serving directory
+# Stage 2: Serve with NGINX
+FROM nginx:alpine
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Expose port 80
-EXPOSE 80
+# Optional: Custom nginx config for React Router
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Start Nginx
+EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
+

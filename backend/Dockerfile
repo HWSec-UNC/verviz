@@ -1,18 +1,10 @@
-# Use Node.js as base image
-FROM node:18-alpine
+FROM node:22
 
-# Set working directory
 WORKDIR /app
-
-# Copy package.json and install dependencies
-COPY package.json package-lock.json ./
-RUN npm install
-
-# Copy all source code
 COPY . .
 
-# Expose port 8080
-EXPOSE 8080
+RUN npm install
 
-# Start the backend server
+EXPOSE 8080
 CMD ["node", "server.js"]
+
