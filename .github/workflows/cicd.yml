@@ -24,4 +24,4 @@ jobs:
       - uses: actions/checkout@v4
       - name: Trigger OKD Build for Veriviz Backend
         run: |
-          curl -X POST ${{ secrets.CD_BUILD_WEBHOOK_BACKEND }}
+          curl -X POST ${{ secrets.CD_BUILD_WEBHOOK_VERIVIZ_BACKEND }}
