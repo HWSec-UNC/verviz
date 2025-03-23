@@ -1,14 +1,22 @@
+# Use official Node.js image
 FROM node:22
 
+# Set working directory
 WORKDIR /app
-COPY . .
 
+# Copy and install dependencies
+COPY package*.json ./
 RUN npm install && npm run build
 
-# Install a lightweight static server
+# Copy rest of the files and build output
+COPY . .
+RUN npm run build
+
+# Install a production-grade HTTP server (e.g., serve)
 RUN npm install -g serve
 
+# Expose the port serve runs on
 EXPOSE 8080
 
-# Serve your compiled build with React Router support
+# Serve the production build
 CMD ["serve", "-s", "dist", "-l", "8080"]
