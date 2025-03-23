@@ -51,6 +51,15 @@ app.post("/upload", upload.single("file"), async (req, res) => {
             sylviaResponse.output_text
         );
 
+        // Clean up the uploaded file after it's processed
+        fs.unlink(filePath, (err) => {
+            if (err) {
+                console.error(`Error deleting file ${filePath}:`, err);
+            } else {
+                console.log(`File ${filePath} deleted successfully.`);
+            }
+        });
+
         res.json({ visualizationId, message: "File processed successfully!" });
     } catch (error) {
         console.error("Error in /upload route:", error.message);
