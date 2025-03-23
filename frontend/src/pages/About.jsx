@@ -5,7 +5,7 @@ const AboutPage = () => {
     <div className="about-container">
       {/* Hero Section */}
       <header className="hero-section">
-        <h1>About SEIF & Sylvia(CD check)</h1>
+        <h1>About SEIF & Sylvia</h1>
         <p>
           Exploring hardware security and verification through augmented symbolic execution.
         </p>
@@ -35,7 +35,7 @@ const AboutPage = () => {
         <h2>Meet the Team</h2>
         <div className="team-grid">
           {[
-            { name: "Kaki Ryan", role: "Researcher, UNC Chapel Hill" },
+            { name: "Kaki Ryan", role: "Proffesor Researcher, UNC Chapel Hill" },
             { name: "William Millen", role: "Visualizer" },
             { name: "Cynthia Sturton", role: "Head of the Hardware Security Research lab at UNC" }
           ].map((person, index) => (

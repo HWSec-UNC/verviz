@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  cd:
+  cd-frontend:
     name: "Continuous Deployment - Veriviz"
     runs-on: ubuntu-latest
 
@@ -17,3 +17,11 @@ jobs:
       - name: Trigger OKD Build for Veriviz
         run: |
           curl -X POST ${{ secrets.CD_BUILD_WEBHOOK_FRONTEND}}
+  cd-backend:
+    name: "Continuous Deployment - Backend"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Trigger OKD Build for Veriviz Backend
+        run: |
+          curl -X POST ${{ secrets.CD_BUILD_WEBHOOK_BACKEND }}
