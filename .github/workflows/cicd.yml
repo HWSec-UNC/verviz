@@ -1,0 +1,19 @@
+name: Veriviz CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  cd:
+    name: "Continuous Deployment - Veriviz"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Trigger OKD Build for Veriviz
+        run: |
+          curl -X POST ${{ secrets.CD_BUILD_WEBHOOK_FRONTEND}}
