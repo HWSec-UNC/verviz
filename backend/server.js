@@ -7,7 +7,7 @@ const { saveVisualization } = require("./services/databaseService");
 const { fetchAllVisualizations, fetchVisualizationById, deleteVisualization } = require("./services/databaseService");
 
 const app = express();
-const PORT = 5000;
+const PORT = 8080;
 
 app.use(cors());
 app.use(express.json());
@@ -111,5 +111,5 @@ app.get("/", (req, res) => {
     res.send("Server is running! Available routes: /upload, /visualizations, /visualization/:id");
 });
 
-// tart Server
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+// start Server
+app.listen(PORT, () => console.log(`Server running on ${PORT}`));
