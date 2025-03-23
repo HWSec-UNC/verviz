@@ -9,7 +9,24 @@ const { fetchAllVisualizations, fetchVisualizationById, deleteVisualization } = 
 const app = express();
 const PORT = 8000;
 
-app.use(cors());
+const allowedOrigins = [
+    "https://sylvia-dept-hwsecurity.apps.cloudapps.unc.edu",
+    "https://veriviz-dept-hwsecurity.apps.cloudapps.unc.edu"
+  ];
+
+app.use(cors(
+{
+        origin: (origin, callback) => {
+          // Allow no origin (e.g., for internal tools like curl)
+          if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+          } else {
+            callback(new Error("Not allowed by CORS"));
+          }
+        },
+        credentials: true
+      }
+));
 app.use(express.json());
 
 // Ensure "uploads" folder exists

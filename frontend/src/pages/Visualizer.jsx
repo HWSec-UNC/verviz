@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../styles/visualizer.css";
 
+const BACKEND_URL = "https://veriviz-backend-dept-hwsecurity.apps.cloudapps.unc.edu"; // Change this when deploying
+
+
 const VisualizerPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [visualizations, setVisualizations] = useState([]);
@@ -10,7 +13,7 @@ const VisualizerPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:5000/visualizations")
+    fetch(`${BACKEND_URL}/visualizations`)
       .then((res) => res.json())
       .then((data) => {
         setVisualizations(data);

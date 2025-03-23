@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "../../styles/upload.css";
 
-const BACKEND_URL = "http://localhost:5000"; // Change this when deploying
+const BACKEND_URL = "https://veriviz-backend-dept-hwsecurity.apps.cloudapps.unc.edu"; // Change this when deploying
 
 
 const UploadPage = () => {
