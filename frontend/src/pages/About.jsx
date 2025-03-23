@@ -5,7 +5,7 @@ const AboutPage = () => {
     <div className="about-container">
       {/* Hero Section */}
       <header className="hero-section">
-        <h1>About SEIF & Sylvia</h1>
+        <h1>About SEIF & Sylvia(CD check)</h1>
         <p>
           Exploring hardware security and verification through augmented symbolic execution.
         </p>
