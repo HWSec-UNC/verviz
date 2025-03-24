@@ -35,9 +35,9 @@ const AboutPage = () => {
         <h2>Meet the Team</h2>
         <div className="team-grid">
           {[
-            { name: "Kaki Ryan", role: "Proffesor Researcher, UNC Chapel Hill" },
-            { name: "William Millen", role: "Visualizer" },
-            { name: "Cynthia Sturton", role: "Head of the Hardware Security Research lab at UNC" }
+            { name: "Kaki Ryan", role: "Ph.D. Candidate in Computer Science at UNC Chapel Hill, soon to be Assistant Professor; Lead Developer of SEIF and Sylvia" },
+            { name: "William Millen", role: "Undergraduate Student and Researcher developing SEIF and Sylvia’s interactive visualization website" },
+            { name: "Cynthia Sturton", role: "Professor of Computer Science at UNC Chapel Hill, and Head of the Hardware Security Research Lab at UNC" }
           ].map((person, index) => (
             <div key={index} className="team-card">
               <h3>{person.name}</h3>
