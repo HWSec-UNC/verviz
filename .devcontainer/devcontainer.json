@@ -12,6 +12,10 @@
     "remoteUser": "root",
     "features": {
       "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
-    }
+    },
+    "forwardPorts": [
+      5173, //frontend
+      8000 //backend
+    ]
   }
   

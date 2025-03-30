@@ -11,7 +11,9 @@ const PORT = 8000;
 
 const allowedOrigins = [
     "https://sylvia-dept-hwsecurity.apps.cloudapps.unc.edu",
-    "https://veriviz-dept-hwsecurity.apps.cloudapps.unc.edu"
+    "https://veriviz-dept-hwsecurity.apps.cloudapps.unc.edu",
+    "http://localhost:5173",
+    "http://localhost:8000",
   ];
 
 app.use(cors(

@@ -46,6 +46,40 @@ const AboutPage = () => {
           ))}
         </div>
       </section>
+
+      {/* Citation Section */}
+      {/* 
+      
+      */}
+      <section className="citation-section">
+        <h1>Citations</h1>
+        <h2>Sylvia</h2>
+        <h3>Github Repository: <a href="https://github.com/HWSec-UNC/Sylvia">Click Here</a></h3>
+        <h3>Read the paper: <a href="https://repositum.tuwien.at/bitstream/20.500.12708/188806/1/Ryan-2023-Sylvia%20Countering%20the%20Path%20Explosion%20Problem%20in%20the%20Symbolic%20Ex...-vor.pdf">Click Here</a></h3>
+        <p>
+          {`
+          @inproceedings{Ryan2023Sylvia, author = {Ryan, Kaki and Sturton, Cynthia}, 
+          title = {Sylvia: Countering the Path Explosion Problem in the Symbolic Execution of Hardware Designs}, 
+          year = {2023}, isbn = {978-3-85448-060-0}, publisher = {TU Wien Academic Press}, address = {New York, NY, USA}, 
+          url = {https://repositum.tuwien.at/handle/20.500.12708/188806 }, 
+          booktitle = {Proceedings of the 23rd Conference on Formal Methods in Computer-Aided Design (FMCAD)}, 
+          pages = {110--121}, numpages = {12}, series = {FMCAD} }
+          `}
+        </p>
+        <h2>SEIF</h2>
+        <h3>Read the paper: <a href="https://dl.acm.org/doi/pdf/10.1145/3623652.3623666">Click Here</a></h3>
+        <p>
+          {`
+          @inproceedings{ryan2023SEIF, author = {Ryan, Kaki and Gregoire, Matthew and Sturton, Cynthia}, 
+          title = {{SEIF: Augmented} Symbolic Execution for Information Flow in Hardware Designs}, year = {2023}, 
+          isbn = {9798400716232}, publisher = {Association for Computing Machinery}, address = {New York, NY, USA}, 
+          url = {https://doi.org/10.1145/3623652.3623666}, doi = {10.1145/3623652.3623666}, 
+          booktitle = {Proceedings of the 12th International Workshop on Hardware and Architectural Support for Security and Privacy (HASP)}, 
+          pages = {1--9}, numpages = {9}, keywords = {path coverage, information flow, symbolic execution, hardware security}, 
+          location = {Toronto, Canada}, }
+          `}
+        </p>
+      </section>
     </div>
   );
 };

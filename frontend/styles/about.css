@@ -91,4 +91,42 @@
     font-size: 16px;
     color: #666;
   }
-  
+
+  /* Citation Section */
+  .citation-section{
+    max-width: 800px;
+    text-align: left;
+    margin: 40px 0;
+  }
+  .citation-section h1{
+    width: 100%;
+    background: #FFFFFF;
+    color: #ff5138;
+    text-align: center;
+    padding: 50px 20px;
+    font-size: 36px;
+    margin-bottom: 10px;
+  }
+  .citation-section h2{
+    font-size: 28px;
+    margin-bottom: 10px;
+    color: #ff5138;
+  }
+  .citation-section h3{
+    color:#69607A;
+    font-size: 20px;
+  }
+  .citation-section a{
+    color: #ff5138;
+    font-size: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .citation-section a:hover{
+    color: #EB1D00;
+  }
+  .citation-section p{
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }

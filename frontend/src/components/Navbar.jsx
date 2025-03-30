@@ -4,7 +4,7 @@ import "../../styles/navbar.css";
 export default function Navbar() {
   return (
     <nav className="navbar">
-      <div className="logo">Hardware Visualizer</div>
+      <div className="logo">Verification Visualization</div>
       <ul>
         <li><Link to="/">Home</Link></li>
         <li><Link to="/upload">Upload</Link></li>
