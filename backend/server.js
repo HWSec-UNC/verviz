@@ -9,7 +9,7 @@ const { fetchAllVisualizations, fetchVisualizationById, deleteVisualization } = 
 const app = express();
 const PORT = 8000;
 
-/*
+
 const allowedOrigins = [
     "https://sylvia-dept-hwsecurity.apps.cloudapps.unc.edu",
     "https://veriviz-dept-hwsecurity.apps.cloudapps.unc.edu",
@@ -22,12 +22,12 @@ const allowedOrigins = [
     credentials: true
   }));
 app.use(express.json());
-*/
 
+/*
 app.use(cors()); // 👈 This allows ALL origins, all methods, no restrictions
 
 app.use(express.json());
-
+*/
 // Ensure "uploads" folder exists
 const UPLOADS_DIR = "uploads";
 const fs = require("fs");
