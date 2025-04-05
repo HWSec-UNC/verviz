@@ -2,7 +2,7 @@ const axios = require("axios");
 const fs = require("fs");
 const FormData = require("form-data");
 
-const SYLVIA_API_URL = "http://127.0.0.1:8000/analyze"; // Change when fully deployed
+const SYLVIA_API_URL = "http://localhost:8001/analyze"; // Change when fully deployed
 
 /**
  * Sends a file to Sylvia API for processing

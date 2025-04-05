@@ -13,22 +13,13 @@ const allowedOrigins = [
     "https://sylvia-dept-hwsecurity.apps.cloudapps.unc.edu",
     "https://veriviz-dept-hwsecurity.apps.cloudapps.unc.edu",
     "http://localhost:5173",
-    "http://localhost:8000",
+    "http://localhost:8001",
   ];
 
-app.use(cors(
-{
-        origin: (origin, callback) => {
-          // Allow no origin (e.g., for internal tools like curl)
-          if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-          } else {
-            callback(new Error("Not allowed by CORS"));
-          }
-        },
-        credentials: true
-      }
-));
+  app.use(cors({
+    origin: allowedOrigins,
+    credentials: true
+  }));
 app.use(express.json());
 
 // Ensure "uploads" folder exists
