@@ -3,9 +3,8 @@ import "../../styles/upload.css";
 
 const BACKEND_URL = import.meta.env.MODE === "development"
   ? "http://localhost:8000"
-  : "https://veriviz-backend-dept-hwsecurity.apps.cloudapps.unc.edu";
-
-
+  : "https://veriviz-backend-dept-hwsecurity.apps.cloudapps.unc.edu"
+  
 const UploadPage = () => {
   const [file, setFile] = useState(null);
   const [name, setName] = useState("");

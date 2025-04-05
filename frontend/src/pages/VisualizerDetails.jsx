@@ -3,7 +3,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import * as d3 from "d3";
 import "../../styles/visualizer_details.css";
 
-const BACKEND_URL = "https://veriviz-backend-dept-hwsecurity.apps.cloudapps.unc.edu"; // Change this when deploying
+const BACKEND_URL = import.meta.env.MODE === "development"
+  ? "http://localhost:8000"
+  : "https://veriviz-backend-dept-hwsecurity.apps.cloudapps.unc.edu"
+  
 
 const VisualizerDetails = () => {
     const { id } = useParams();

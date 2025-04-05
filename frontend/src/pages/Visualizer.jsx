@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../styles/visualizer.css";
 
-const BACKEND_URL = "https://veriviz-backend-dept-hwsecurity.apps.cloudapps.unc.edu"; // Change this when deploying
-
-
+const BACKEND_URL = import.meta.env.MODE === "development"
+  ? "http://localhost:8000"
+  : "https://veriviz-backend-dept-hwsecurity.apps.cloudapps.unc.edu"
+  
 const VisualizerPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [visualizations, setVisualizations] = useState([]);
