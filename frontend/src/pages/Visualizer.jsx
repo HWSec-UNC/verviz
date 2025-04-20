@@ -32,12 +32,12 @@ const VisualizerPage = () => {
   );
 
   return (
-    <div className="visualizer-container">
+    <div className="visualizer-container1">
       <h1>Visualizations</h1>
 
       <input
         type="text"
-        className="search-bar"
+        className="search-bar1"
         placeholder="Search for a visualization..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
@@ -47,9 +47,9 @@ const VisualizerPage = () => {
       {error && <p className="error">{error}</p>}
       {!loading && filteredVisualizations.length === 0 && <p>No visualizations found.</p>}
 
-      <ul className="visualization-list">
+      <ul className="visualization-list1">
         {filteredVisualizations.map((viz) => (
-          <li key={viz.id} className="visualization-item" onClick={() => navigate(`/visualization/${viz.id}`)}>
+          <li key={viz.id} className="visualization-item1" onClick={() => navigate(`/visualization/${viz.id}`)}>
             <h2>{viz.name} - {viz.type}</h2>
             <p>Uploaded on: {new Date(viz.date).toLocaleDateString()}</p>
           </li>

@@ -1,14 +1,119 @@
 :root {
     --main-color: #ff5138;
-    --secondary-color: #EB1D00
+    --app-bar-height: 80px; /* Assuming this is set elsewhere or adjust */
 }
-.delete-button{
+
+/* page must scroll if content overflows - ok for vertical */
+html, body {
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+    background: #f9f9f9;
+    /* Let svg-wrapper handle horizontal scroll if needed */
+    /* overflow-x: hidden; might be preferable if only svg scrolls */
+}
+
+/* overall wrapper */
+.visualizer-container {
+    position: relative;
+    /* max-width: 1200px; /* Allow container to be wider if needed */
+    width: 95%; /* Use percentage or keep max-width */
+    margin: 0 auto;
+    background: transparent;
+    padding: 20px 24px 24px; /* Adjust top padding if needed */
+    box-sizing: border-box;
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Stack header and svg-wrapper vertically */
+    min-height: calc(100vh - 40px); /* Example: Fill viewport height minus padding */
+}
+
+/* header row */
+.header {
     display: flex;
-    margin-left: auto;
-    background: var(--main-color); 
-    color: white; 
-    padding: 10px; 
-    border: none; 
-    cursor: pointer; 
-    marginTop: 10px
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-shrink: 0; /* Prevent header from shrinking */
 }
+.header h1{
+    color: var(--main-color);
+}
+.delete-button {
+    background: var(--main-color);
+    color: white;
+    padding: 0.8rem 1.2rem; /* Slightly smaller padding */
+    font-size: 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+/* *** FIX: Make the svg wrapper scrollable *** */
+.svg-wrapper {
+    width: 100%;          /* Take full width of the container */
+    flex-grow: 1;         /* Allow wrapper to grow and fill space */
+    overflow: auto;       /* Enable scrollbars *only* when content overflows */
+    border: 1px solid #eee; /* Optional: visualize the boundary */
+    background: white;      /* Give it a background */
+}
+
+/* svg itself should just take the size D3 gives it */
+svg {
+    display: block; /* Remove extra space below */
+    /* width/height are set via attributes by D3 now */
+    /* overflow: visible !important; -- Not needed if wrapper handles overflow */
+}
+
+/* edges and nodes */
+.link {
+    fill: none;
+    stroke: #ff5138;
+    stroke-opacity: 0.6;
+    stroke-width: 0.3rem;
+}
+.node circle {
+    stroke: steelblue;
+    stroke-opacity: 0.1;
+    stroke-width: 0.3rem;
+    cursor: pointer;
+}
+.node text {
+    font: 10px sans-serif;
+    fill: #333;
+    pointer-events: none; /* Prevent text from blocking mouse events on circle */
+}
+
+/* tooltip floats above everything, follows the mouse */
+.tooltip {
+    position: fixed; /* Correct positioning relative to viewport */
+    display: none;
+    z-index: 9999;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    pointer-events: none; /* Tooltip shouldn't capture mouse events */
+    font-size: 12px;
+    line-height: 1.4;
+    max-width: 350px; /* Allow slightly wider tooltips */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Add subtle shadow */
+}
+/* Style code blocks within tooltip if using JSON.stringify */
+.tooltip pre {
+    background: #eee;
+    padding: 5px;
+    border-radius: 3px;
+    font-size: 11px;
+    max-height: 150px;
+    overflow-y: auto;
+}
+  
+  
+  
+  
+
+  
+  
+  
+  
+  

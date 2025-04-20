@@ -1,7 +1,7 @@
 /* Global Styles */
 .upload-container {
   font-family: Arial, sans-serif;
-  background-color: #f9f9f9;
+  background-color: #f9f9f9 !important;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
