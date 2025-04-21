@@ -1,6 +1,6 @@
 :root {
     --main-color: #ff5138;
-    --app-bar-height: 80px; /* Assuming this is set elsewhere or adjust */
+    --app-bar-height: 80px;
 }
 
 /* page must scroll if content overflows - ok for vertical */
@@ -13,16 +13,15 @@ html, body {
     /* overflow-x: hidden; might be preferable if only svg scrolls */
 }
 
-/* overall wrapper */
 .visualizer-container {
     position: relative;
     /* max-width: 1200px; /* Allow container to be wider if needed */
     width: 95%; /* Use percentage or keep max-width */
     margin: 0 auto;
     background: transparent;
-    padding: 20px 24px 24px; /* Adjust top padding if needed */
+    padding: 20px 24px 24px;
     box-sizing: border-box;
-    display: flex; /* Use flexbox for layout */
+    display: flex;
     flex-direction: column; /* Stack header and svg-wrapper vertically */
     min-height: calc(100vh - 40px); /* Example: Fill viewport height minus padding */
 }
