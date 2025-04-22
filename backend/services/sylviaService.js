@@ -25,6 +25,7 @@ async function analyzeFileWithSylvia(filePath, clockCycles) {
     try {
         const response = await axios.post(SYLVIA_API_URL, formData, {
             headers: formData.getHeaders(),
+            timeout: 600000 //10 mins
         });
 
         console.log("Sylvia API Response:", response.data);
