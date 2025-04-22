@@ -2,11 +2,13 @@ require("dotenv").config();
 const express = require("express");
 const multer = require("multer");
 const cors = require("cors");
+const http = require("http")
 const { analyzeFileWithSylvia } = require("./services/sylviaService");
 const { saveVisualization } = require("./services/databaseService");
 const { fetchAllVisualizations, fetchVisualizationById, deleteVisualization } = require("./services/databaseService");
 
 const app = express();
+const server = http.createServer(app) // new code
 const PORT = 8000;
 
 
@@ -23,11 +25,6 @@ const allowedOrigins = [
   }));
 app.use(express.json());
 
-/*
-app.use(cors()); // 👈 This allows ALL origins, all methods, no restrictions
-
-app.use(express.json());
-*/
 // Ensure "uploads" folder exists
 const UPLOADS_DIR = "uploads";
 const fs = require("fs");
@@ -43,7 +40,14 @@ const storage = multer.diskStorage({
         cb(null, Date.now() + "-" + file.originalname);
     }
 });
-const upload = multer({ storage });
+//const upload = multer({ storage });
+const upload = multer({
+      storage,
+      limits: {
+        fileSize: 500 * 1024 * 1024,   // 500 MB
+        timeout : 0                    // no Multer timeout
+      },
+    });
 
 // *Upload Route (Processes File with Sylvia and Stores in DB)
 app.post("/upload", upload.single("file"), async (req, res) => {
@@ -128,4 +132,7 @@ app.get("/", (req, res) => {
 });
 
 // start Server
-app.listen(PORT, () => console.log(`Server running on ${PORT}`));
+//app.listen(PORT, () => console.log(`Server running on ${PORT}`));
+server.setTimeout(0);
+server.headersTimeout = 0;
+server.listen(PORT, () => console.log(`Server running on ${PORT}`));
