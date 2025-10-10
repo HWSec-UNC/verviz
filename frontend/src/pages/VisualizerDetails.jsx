@@ -2,6 +2,12 @@ import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import * as d3 from "d3";
 import "../../styles/visualizer_details.css"; // Ensure CSS is imported
+import StaticGraph from "../components/StaticGraph";
+import StaticGraph2 from "../components/StaticGraph-copy";
+import DeckStaticGraph from "../components/DeckStaticGraph";
+
+
+
 
 const BACKEND_URL =
   import.meta.env.MODE === "development"
@@ -33,6 +39,7 @@ export default function VisualizerDetails() {
             typeof row.json_data === "string"
               ? JSON.parse(row.json_data)
               : row.json_data;
+
           setTreeData(tree);
         }
       })
@@ -297,9 +304,23 @@ export default function VisualizerDetails() {
             {/* Keep the main g element inside for transforms if needed,
                 but viewBox/width/height handles overall positioning */}
         </svg>
-      </div>
+     </div>
+      
+    {/* <VisualizerGraphGL treeData={treeData} />*/}
+    {/* <ForceGraphSmokeTest /> */}
+       {/*  <StaticGraph treeData={treeData}/> */}
+       <DeckStaticGraph treeData={treeData}/>
+
+
+
       {/* Tooltip remains outside the wrapper, positioned fixed */}
       <div ref={tooltipRef} className="tooltip" />
     </div>
   );
 }
+
+/*
+nodes: {execution, path0, path1, path2, violation0, violation1, violation2}
+links: [{source:execution,target:path0},{source:execution,target:path1},{source:execution,target:path2},
+        {source:path0,target:violation0},{source:path1,target:violation1},{source:path2,target:violation2}]
+*/

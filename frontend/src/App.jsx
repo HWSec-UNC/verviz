@@ -6,6 +6,7 @@ import Visualizer from "./pages/Visualizer";
 import About from "./pages/About";
 import VisualizationDetails from "./pages/VisualizerDetails";
 
+
 function App() {
   return (
     <>
@@ -16,6 +17,7 @@ function App() {
         <Route path="/visualizations" element={<Visualizer />} />
         <Route path="/visualization/:id" element={<VisualizationDetails />} />
         <Route path="/about" element={<About />} />
+
       </Routes>
     </>
   );

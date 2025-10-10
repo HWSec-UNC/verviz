@@ -10,10 +10,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@deck.gl/core": "^9.1.15",
+    "@deck.gl/layers": "^9.1.15",
+    "@deck.gl/react": "^9.1.15",
     "axios": "^1.7.9",
     "d3": "^7.9.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-force-graph": "^1.48.1",
+    "react-force-graph-2d": "^1.29.0",
     "react-router-dom": "^7.1.5"
   },
   "devDependencies": {
