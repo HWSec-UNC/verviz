@@ -14,22 +14,28 @@ const VisualizerPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`${BACKEND_URL}/visualizations`)
-      .then((res) => res.json())
-      .then((data) => {
+    (async () => {
+      try {
+        const res = await fetch(`${BACKEND_URL}/visualizations`);
+        const data = await res.json().catch(() => null);
+        if (!res.ok || !Array.isArray(data)) {
+          throw new Error((data && data.error) || `Unexpected response`);
+        }
         setVisualizations(data);
-        setLoading(false);
-      })
-      .catch((err) => {
+      } catch (err) {
         console.error("Error fetching visualizations:", err);
         setError("Failed to load visualizations.");
+      } finally {
         setLoading(false);
-      });
+      }
+    })();
   }, []);
 
-  const filteredVisualizations = visualizations.filter((viz) =>
-    viz.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredVisualizations = Array.isArray(visualizations)
+    ? visualizations.filter((viz) =>
+        (viz.name || "").toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : [];
 
   return (
     <div className="visualizer-container1">

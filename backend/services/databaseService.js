@@ -2,22 +2,23 @@ const { Pool } = require("pg");
 
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false }
+    ssl: process.env.DATABASE_SSL === 'false' ? false : { rejectUnauthorized: false }
 });
 
 /**
  * Saves visualization data to the database
  * @param {string} name - Name of the visualization
- * @param {string} jsonData - JSON output from Sylvia API
+ * @param {string} type - Visualization type (e.g., 'sylvia', 'syiq')
+ * @param {string} jsonData - JSON output from analysis API
  * @param {string} outputText - Additional output text
  * @returns {Promise<number>} - The ID of the saved visualization
  */
-async function saveVisualization(name, jsonData, outputText) {
+async function saveVisualization(name, type, jsonData, outputText) {
     try {
         const result = await pool.query(
             `INSERT INTO visualizations (name, type, json_data, output_text)
              VALUES ($1, $2, $3, $4) RETURNING id`,
-            [name, "sylvia", jsonData, outputText]
+            [name, type, jsonData, outputText]
         );
 
         console.log("Stored in database. ID:", result.rows[0].id);

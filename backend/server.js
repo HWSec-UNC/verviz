@@ -4,6 +4,7 @@ const multer = require("multer");
 const cors = require("cors");
 const http = require("http")
 const { analyzeFileWithSylvia } = require("./services/sylviaService");
+const { analyzeFileWithSyIQ } = require("./services/syiqService");
 const { saveVisualization } = require("./services/databaseService");
 const { fetchAllVisualizations, fetchVisualizationById, deleteVisualization } = require("./services/databaseService");
 
@@ -50,23 +51,35 @@ const upload = multer({
 // *Upload Route (Processes File with Sylvia and Stores in DB)
 app.post("/upload", upload.single("file"), async (req, res) => {
     try {
-        const { name, clockCycles } = req.body;
-        if (!req.file || !name || !clockCycles) {
-            return res.status(400).json({ error: "Missing file, name, or clock cycles." });
+        const { name, clockCycles, visualizationType } = req.body;
+        if (!req.file || !name) {
+            return res.status(400).json({ error: "Missing file or name." });
+        }
+
+        const type = (visualizationType || "sylvia").toLowerCase();
+        // clockCycles required for sylvia and syiq (placeholder uses Sylvia)
+        if ((type === "sylvia" || type === "syiq") && !clockCycles) {
+            return res.status(400).json({ error: "Missing clock cycles for selected analysis type." });
         }
 
         console.log("Upload Request:", { name, file: req.file.filename, clockCycles });
 
         const filePath = req.file.path;
 
-        // Call Sylvia API
-        const sylviaResponse = await analyzeFileWithSylvia(filePath, clockCycles);
+        // Route to appropriate analyzer
+        let analysisResponse;
+        if (type === "syiq") {
+            analysisResponse = await analyzeFileWithSyIQ(filePath, clockCycles);
+        } else {
+            analysisResponse = await analyzeFileWithSylvia(filePath, clockCycles);
+        }
 
         // Save to database
         const visualizationId = await saveVisualization(
             name,
-            sylviaResponse.json_data,
-            sylviaResponse.output_text
+            type,
+            analysisResponse.json_data,
+            analysisResponse.output_text
         );
 
         // Clean up the uploaded file after it's processed

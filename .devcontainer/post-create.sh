@@ -30,3 +30,14 @@ node -v
 npm -v
 
 echo "Dev container setup complete!"
+
+# Optionally install project dependencies to speed up first run
+if [ -d "/workspace/frontend" ]; then
+  echo "Installing frontend dependencies..."
+  cd /workspace/frontend && npm install || true
+fi
+
+if [ -d "/workspace/backend" ]; then
+  echo "Installing backend dependencies..."
+  cd /workspace/backend && npm install || true
+fi

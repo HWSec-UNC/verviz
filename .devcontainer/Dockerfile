@@ -18,10 +18,17 @@ RUN apt-get update && apt-get install -y \
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
     && apt-get install -y nodejs
 
-# Install OKD CLI
-RUN wget -O /tmp/oc.tgz "https://github.com/okd-project/okd/releases/download/4.15.0-0.okd-2024-03-10-010116/openshift-client-linux-4.15.0-0.okd-2024-03-10-010116.tar.gz" \
-    && tar -xvzf /tmp/oc.tgz -C /usr/local/bin \
-    && rm /tmp/oc.tgz
+# Install OKD CLI (arch-aware)
+ARG TARGETARCH
+RUN set -eux; \
+    case "$TARGETARCH" in \
+      arm64) OC_ARCH='arm64-';; \
+      amd64) OC_ARCH='';; \
+      *) echo "Unsupported arch: $TARGETARCH"; exit 1;; \
+    esac; \
+    wget -O /tmp/oc.tgz "https://github.com/okd-project/okd/releases/download/4.15.0-0.okd-2024-03-10-010116/openshift-client-linux-${OC_ARCH}4.15.0-0.okd-2024-03-10-010116.tar.gz"; \
+    tar -xzf /tmp/oc.tgz -C /usr/local/bin oc; \
+    rm /tmp/oc.tgz
 
 # Verify installations
 RUN node -v && npm -v && python3 --version && oc version

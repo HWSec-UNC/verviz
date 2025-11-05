@@ -78,8 +78,8 @@ const UploadPage = () => {
 
         <div className="options">
           <label className="radio-label">
-            <input type="radio" name="visualizationType" value="seif" checked={visualizationType === "seif"} onChange={handleOptionChange} />
-            SEIF
+            <input type="radio" name="visualizationType" value="syiq" checked={visualizationType === "syiq"} onChange={handleOptionChange} />
+            SyIQ
           </label>
 
           <label className="radio-label">
@@ -88,7 +88,7 @@ const UploadPage = () => {
           </label>
         </div>
 
-        {visualizationType === "sylvia" && (
+        {(visualizationType === "sylvia" || visualizationType === "syiq") && (
           <label className="file-label">
             Enter number of clock cycles:
             <input type="number" value={clockCycles} onChange={handleClockCyclesChange} min="1" className="text-input" required />

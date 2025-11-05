@@ -12,6 +12,9 @@
   "dependencies": {
     "axios": "^1.7.9",
     "d3": "^7.9.0",
+    "@deck.gl/core": "^9.0.36",
+    "@deck.gl/layers": "^9.0.36",
+    "@deck.gl/react": "^9.0.36",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.1.5"
