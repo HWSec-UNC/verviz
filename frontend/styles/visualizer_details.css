@@ -15,15 +15,15 @@ html, body {
 
 .visualizer-container {
     position: relative;
-    /* max-width: 1200px; /* Allow container to be wider if needed */
-    width: 95%; /* Use percentage or keep max-width */
+    width: 95%;
     margin: 0 auto;
     background: transparent;
     padding: 20px 24px 24px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column; /* Stack header and svg-wrapper vertically */
-    min-height: calc(100vh - 40px); /* Example: Fill viewport height minus padding */
+    height: calc(100vh - var(--app-bar-height)); /* Ensure a concrete height for flex children */
+    min-height: 0; /* Allow children to shrink as needed */
 }
 
 /* header row */
@@ -50,8 +50,10 @@ html, body {
 /* *** FIX: Make the svg wrapper scrollable *** */
 .svg-wrapper {
     width: 100%;          /* Take full width of the container */
-    flex-grow: 1;         /* Allow wrapper to grow and fill space */
-    overflow: auto;       /* Enable scrollbars *only* when content overflows */
+    flex: 1 1 auto;       /* Grow to fill remaining height */
+    min-height: 0;        /* Critical for flex children with overflow */
+    height: 100%;         /* Ensure DeckGL can use 100% height */
+    overflow: auto;       /* Enable scrollbars when content overflows */
     border: 1px solid #eee; /* Optional: visualize the boundary */
     background: white;      /* Give it a background */
 }
